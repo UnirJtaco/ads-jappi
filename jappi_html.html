@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jappi - Sistema de Pedidos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Login Page */
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 450px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #FF6B6B;
+            margin-bottom: 10px;
+            font-size: 36px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #666;
+            font-size: 20px;
+            font-weight: normal;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #FF6B6B;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #FF6B6B;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.3);
+        }
+
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #c62828;
+            display: none;
+        }
+
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2e7d32;
+            display: none;
+        }
+
+        .info-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .info-box h3 {
+            color: #FF6B6B;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .info-box p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        /* Main Page */
+        .main-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-left h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .user-info {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-profile {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-settings {
+            background: #f093fb;
+            color: white;
+        }
+
+        .btn-logout {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-small:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .restaurants-title {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .restaurants-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .restaurants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .restaurant-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .restaurant-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .restaurant-icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+
+        .restaurant-name {
+            font-size: 22px;
+            color: #FF6B6B;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .restaurant-product {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .restaurant-product-name {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .restaurant-rating {
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .btn-menu {
+            background: #FF6B6B;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-menu:hover {
+            background: #ff5252;
+        }
+
+        /* Profile Page */
+        .profile-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .back-button {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: #5568d3;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .profile-avatar {
+            font-size: 80px;
+        }
+
+        .profile-info h2 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .profile-detail {
+            color: #666;
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        .order-history {
+            margin-top: 30px;
+        }
+
+        .order-history h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .order-item {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        /* Settings Page */
+        .settings-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .settings-section {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+        }
+
+        .settings-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .checkbox-group {
+            margin: 15px 0;
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            font-weight: normal;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .payment-method {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .restaurants-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .login-container {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="container">
+        <div class="login-container">
+            <div class="logo">🍱</div>
+            <h1>Jappi</h1>
+            <h2>Sistema de Recepción de Pedidos</h2>
+            
+            <div id="errorMessage" class="error-message"></div>
+            <div id="successMessage" class="success-message"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" placeholder="Ingrese su usuario">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Ingrese su contraseña">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+            </form>
+
+            <div class="info-box">
+                <h3>ℹ️ Usuarios de prueba</h3>
+                <p><strong>Usuario:</strong> admin | <strong>Contraseña:</strong> admin123</p>
+                <p><strong>Usuario:</strong> usuario1 | <strong>Contraseña:</strong> pass123</p>
+                <p><strong>Usuario:</strong> demo | <strong>Contraseña:</strong> demo123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Page -->
+    <div id="mainPage" class="container hidden">
+        <div class="main-container">
+            <div class="header">
+                <div class="header-left">
+                    <div class="logo">🍱</div>
+                    <h1>Jappi</h1>
+                </div>
+                <div class="user-info">
+                    Bienvenido, <strong id="welcomeUser"></strong>!
+                </div>
+                <div class="header-buttons">
+                    <button class="btn-small btn-profile" onclick="showProfile()">👤 Perfil</button>
+                    <button class="btn-small btn-settings" onclick="showSettings()">⚙️ Config</button>
+                    <button class="btn-small btn-logout" onclick="logout()">🚪 Salir</button>
+                </div>
+            </div>
+
+            <h2 class="restaurants-title">🍽️ Restaurantes Disponibles</h2>
+            <p class="restaurants-subtitle">Selecciona tu restaurante favorito y haz tu pedido</p>
+
+            <div class="restaurants-grid">
+                <div class="restaurant-card">
+                    <div class="restaurant-icon">🍣</div>
+                    <div class="restaurant-name">Sushi Master</div>
+                    <div class="restaurant-product">Producto destacado:</div>
+                    <div class="restaurant-product-name">Roll California Premium</div>
+                    <div class="restaurant-rating">4.8⭐</div>
+                    <button class="btn-menu" onclick="viewMenu('Sushi Master')">Ver Menú</button>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-icon">🍕</div>
+                    <div class="restaurant-name">Pizza Italiana</div>
+                    <div class="restaurant-product">Producto destacado:</div>
+                    <div class="restaurant-product-name">Pizza Margherita</div>
+                    <div class="restaurant-rating">4.6⭐</div>
+                    <button class="btn-menu" onclick="viewMenu('Pizza Italiana')">Ver Menú</button>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-icon">🍔</div>
+                    <div class="restaurant-name">Burger House</div>
+                    <div class="restaurant-product">Producto destacado:</div>
+                    <div class="restaurant-product-name">Burger Clásica con Papas</div>
+                    <div class="restaurant-rating">4.7⭐</div>
+                    <button class="btn-menu" onclick="viewMenu('Burger House')">Ver Menú</button>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-icon">🥡</div>
+                    <div class="restaurant-name">Wok Express</div>
+                    <div class="restaurant-product">Producto destacado:</div>
+                    <div class="restaurant-product-name">Chaufa Especial</div>
+                    <div class="restaurant-rating">4.5⭐</div>
+                    <button class="btn-menu" onclick="viewMenu('Wok Express')">Ver Menú</button>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-icon">🌮</div>
+                    <div class="restaurant-name">Taco Fiesta</div>
+                    <div class="restaurant-product">Producto destacado:</div>
+                    <div class="restaurant-product-name">Tacos al Pastor</div>
+                    <div class="restaurant-rating">4.9⭐</div>
+                    <button class="btn-menu" onclick="viewMenu('Taco Fiesta')">Ver Menú</button>
+                </div>
+
+                <div class="restaurant-card">
+                    <div class="restaurant-icon">🥩</div>
+                    <div class="restaurant-name">Parrilla Premium</div>
+                    <div class="restaurant-product">Producto destacado:</div>
+                    <div class="restaurant-product-name">Lomo Saltado</div>
+                    <div class="restaurant-rating">4.8⭐</div>
+                    <button class="btn-menu" onclick="viewMenu('Parrilla Premium')">Ver Menú</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div id="profilePage" class="container hidden">
+        <div class="profile-container">
+            <button class="back-button" onclick="showMain()">⬅️ Volver</button>
+            
+            <h1>👤 Perfil de Usuario</h1>
+            
+            <div class="profile-header">
+                <div class="profile-avatar">👤</div>
+                <div class="profile-info">
+                    <h2 id="profileUsername"></h2>
+                    <div class="profile-detail"><strong>Email:</strong> usuario@jappi.com</div>
+                    <div class="profile-detail"><strong>Teléfono:</strong> +51 999 999 999</div>
+                    <div class="profile-detail"><strong>Dirección:</strong> Av. Principal 123, Lima</div>
+                    <div class="profile-detail"><strong>Pedidos realizados:</strong> 15</div>
+                </div>
+            </div>
+
+            <div class="order-history">
+                <h3>Historial de Pedidos</h3>
+                <div class="order-item">🍣 Sushi Master - Roll California Premium (hace 2 días)</div>
+                <div class="order-item">🍕 Pizza Italiana - Pizza Margherita (hace 5 días)</div>
+                <div class="order-item">🍔 Burger House - Burger Clásica (hace 1 semana)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Page -->
+    <div id="settingsPage" class="container hidden">
+        <div class="settings-container">
+            <button class="back-button" onclick="showMain()">⬅️ Volver</button>
+            
+            <h1>⚙️ Configuración</h1>
+
+            <div class="settings-section">
+                <h3>Preferencias de la Cuenta</h3>
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" checked>
+                        Recibir notificaciones por email
+                    </label>
+                </div>
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" checked>
+                        Recibir promociones y ofertas
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>Cambiar Contraseña</h3>
+                <div class="form-group">
+                    <label>Contraseña actual</label>
+                    <input type="password" placeholder="Ingrese contraseña actual">
+                </div>
+                <div class="form-group">
+                    <label>Nueva contraseña</label>
+                    <input type="password" placeholder="Ingrese nueva contraseña">
+                </div>
+                <div class="form-group">
+                    <label>Confirmar nueva contraseña</label>
+                    <input type="password" placeholder="Confirme nueva contraseña">
+                </div>
+                <button class="btn btn-primary">Actualizar Contraseña</button>
+            </div>
+
+            <div class="settings-section">
+                <h3>Métodos de Pago</h3>
+                <div class="payment-method">💳 Visa terminada en 1234</div>
+                <div class="payment-method">💳 Mastercard terminada en 5678</div>
+                <button class="btn btn-primary" style="margin-top: 15px;">➕ Agregar nuevo método de pago</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Usuarios válidos
+        const validUsers = {
+            'admin': 'admin123',
+            'usuario1': 'pass123',
+            'demo': 'demo123'
+        };
+
+        let currentUser = '';
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+            
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+            
+            // Validaciones
+            if (!username) {
+                errorMsg.textContent = '❌ Error: El campo usuario no puede estar vacío';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            if (!password) {
+                errorMsg.textContent = '❌ Error: El campo contraseña no puede estar vacío';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            if (!(username in validUsers)) {
+                errorMsg.textContent = '❌ Error: Usuario no válido';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            if (validUsers[username] !== password) {
+                errorMsg.textContent = '❌ Error: Contraseña incorrecta';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            // Login exitoso
+            successMsg.textContent = '🔄 Login in process...';
+            successMsg.style.display = 'block';
+            
+            setTimeout(() => {
+                successMsg.textContent = '✅ Login exitoso!';
+                currentUser = username;
+                
+                setTimeout(() => {
+                    document.getElementById('loginPage').classList.add('hidden');
+                    document.getElementById('mainPage').classList.remove('hidden');
+                    document.getElementById('welcomeUser').textContent = currentUser;
+                }, 500);
+            }, 1500);
+        });
+
+        function showMain() {
+            document.getElementById('profilePage').classList.add('hidden');
+            document.getElementById('settingsPage').classList.add('hidden');
+            document.getElementById('mainPage').classList.remove('hidden');
+        }
+
+        function showProfile() {
+            document.getElementById('mainPage').classList.add('hidden');
+            document.getElementById('settingsPage').classList.add('hidden');
+            document.getElementById('profilePage').classList.remove('hidden');
+            document.getElementById('profileUsername').textContent = currentUser;
+        }
+
+        function showSettings() {
+            document.getElementById('mainPage').classList.add('hidden');
+            document.getElementById('profilePage').classList.add('hidden');
+            document.getElementById('settingsPage').classList.remove('hidden');
+        }
+
+        function logout() {
+            document.getElementById('mainPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+            currentUser = '';
+        }
+
+        function viewMenu(restaurantName) {
+            alert('Abriendo menú de ' + restaurantName + '...');
+        }
+    </script>
+</body>
+</html>
